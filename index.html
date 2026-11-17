@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Skapy Ban Bot</title>
 <style>
-body{font-family:Arial;background:#111;color:white;display:flex;justify-content:center}
-.box{width:95%;max-width:450px;margin-top:20px}
-#chat{height:420px;overflow-y:auto;background:#222;padding:10px;border-radius:10px}
-.msg{margin:8px 0;padding:8px;border-radius:8px}
+*{box-sizing:border-box}
+body{font-family:Arial;background:#111;color:white;margin:0;padding:0;display:flex;justify-content:center}
+.box{width:100%;max-width:650px;padding:15px;margin-top:5px}
+h2{font-size:28px;margin:10px 0}
+p{font-size:18px}
+#chat{height:60vh;min-height:450px;overflow-y:auto;background:#222;padding:15px;border-radius:12px;font-size:19px}
+.msg{margin:10px 0;padding:12px 14px;border-radius:10px;font-size:19px;line-height:1.4}
 .user{background:#0088cc;text-align:right}
 .bot{background:#333}
 .system{background:#ff3b30;text-align:center;font-weight:bold}
 .warn{background:#ffcc00;color:black;text-align:center}
-input{width:75%;padding:12px;border-radius:8px;border:none}
-button{padding:12px;background:#0088cc;color:white;border:none;border-radius:8px}
+.row{display:flex;gap:8px;margin-top:10px}
+input{flex:1;padding:16px;border-radius:10px;border:none;font-size:19px}
+button{padding:16px 22px;background:#0088cc;color:white;border:none;border-radius:10px;font-size:19px;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="box">
 <h2>🤖 Skapy Ban Bot</h2>
 <p>Chat with me. Be respectful or get banned. Type /help</p>
-<div id="chat"><div class="msg bot">Hi! I am Skapy Ban Bot. Type /help to see commands.</div></div><br>
+<div id="chat"><div class="msg bot">Hi! I am Skapy Ban Bot. Type /help to see commands.</div></div>
+<div class="row">
 <input id="input" placeholder="Type here...">
 <button onclick="send()">Send</button>
+</div>
 </div>
 <script>
 let isAdmin=false;let isBanned=false;let warnings=0;
