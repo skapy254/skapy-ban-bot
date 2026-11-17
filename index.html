@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skapy Ban Bot</title>
+<style>
+body{font-family:Arial;background:#111;color:white;display:flex;justify-content:center}
+.box{width:95%;max-width:450px;margin-top:20px}
+#chat{height:420px;overflow-y:auto;background:#222;padding:10px;border-radius:10px}
+.msg{margin:8px 0;padding:8px;border-radius:8px}
+.user{background:#0088cc;text-align:right}
+.bot{background:#333}
+.system{background:#ff3b30;text-align:center;font-weight:bold}
+.warn{background:#ffcc00;color:black;text-align:center}
+input{width:75%;padding:12px;border-radius:8px;border:none}
+button{padding:12px;background:#0088cc;color:white;border:none;border-radius:8px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>🤖 Skapy Ban Bot</h2>
+<p>Chat with me. Be respectful or get banned. Type /help</p>
+<div id="chat"><div class="msg bot">Hi! I am Skapy Ban Bot. Type /help to see commands.</div></div><br>
+<input id="input" placeholder="Type here...">
+<button onclick="send()">Send</button>
+</div>
+<script>
+let isAdmin=false;let isBanned=false;let warnings=0;
+let bannedWords=["fuck","shit","bitch"];
+let bannedList=[];let adminPass="1234";
+function send(){
+let inp=document.getElementById("input");let text=inp.value.trim();
+if(!text)return;addMsg(text,"user");inp.value="";
+if(isBanned){addMsg("You are banned. Contact admin.","system");return;}
+let lower=text.toLowerCase();
+if(text.startsWith("/")){handleCommand(text);return;}
+for(let w of bannedWords){if(lower.includes(w)){addMsg("You used a banned word. You are banned.","system");isBanned=true;bannedList.push("User - bad word: "+w);return;}}
+let reply="I don't understand. Type /help";
+if(lower.includes("hi")||lower.includes("hello"))reply="Hello bro! How can I help you?";
+else if(lower.includes("help"))reply="Type /help to see all commands.";
+setTimeout(()=>addMsg(reply,"bot"),400);
+}
+function handleCommand(cmd){
+let parts=cmd.split(" ");let main=parts[0].toLowerCase();
+if(main==="/help"){addMsg("COMMANDS:\n/admin 1234 = become admin\n/ban = ban\n/unban = unban\n/warn = warn\n/kick = kick\n/banlist = see banned\n/clear = clear chat","bot");return;}
+if(main==="/admin"){if(parts[1]===adminPass){isAdmin=true;addMsg("✅ You are now ADMIN.","bot");}else addMsg("❌ Wrong password.","system");return;}
+if(main==="/ban"){if(!isAdmin){addMsg("❌ Only admin","system");return;}isBanned=true;bannedList.push("User - banned by admin");addMsg("🚫 USER BANNED","system");return;}
+if(main==="/unban"){if(!isAdmin){addMsg("❌ Only admin","system");return;}isBanned=false;warnings=0;addMsg("✅ USER UNBANNED","bot");return;}
+if(main==="/warn"){if(!isAdmin){addMsg("❌ Only admin","system");return;}warnings++;addMsg("⚠️ WARNING "+warnings+"/3","warn");if(warnings>=3){isBanned=true;addMsg("🚫 Banned after 3 warnings.","system");}return;}
+if(main==="/kick"){if(!isAdmin){addMsg("❌ Only admin","system");return;}addMsg("👢 USER KICKED","system");return;}
+if(main==="/banlist"){if(!isAdmin){addMsg("❌ Only admin","system");return;}if(bannedList.length===0)addMsg("Ban list empty.","bot");else addMsg("BANNED:\n"+bannedList.join("\n"),"bot");return;}
+if(main==="/clear"){document.getElementById("chat").innerHTML="";addMsg("Chat cleared.","bot");return;}
+addMsg("Unknown command. Type /help","bot");
+}
+function addMsg(t,type){let chat=document.getElementById("chat");let div=document.createElement("div");div.className="msg "+type;div.innerText=t;chat.appendChild(div);chat.scrollTop=chat.scrollHeight;}
+document.getElementById("input").addEventListener("keypress",function(e){if(e.key==="Enter")send();});
+</script>
+</body>
+</html>
